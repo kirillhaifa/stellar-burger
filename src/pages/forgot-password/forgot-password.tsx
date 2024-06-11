@@ -1,14 +1,23 @@
-import { FC, useState, SyntheticEvent } from 'react';
+import { FC, useState, SyntheticEvent, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { forgotPasswordApi } from '@api';
 import { ForgotPasswordUI } from '@ui-pages';
+import { useSelector } from 'react-redux';
+import { RootState } from 'src/services/store';
 
 export const ForgotPassword: FC = () => {
   const [email, setEmail] = useState('');
   const [error, setError] = useState<Error | null>(null);
 
   const navigate = useNavigate();
+  const authed = useSelector((state: RootState) => state.auth.authorized);
+
+  useEffect(() => {
+    if (authed) {
+      navigate('/');
+    }
+  }, []);
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();

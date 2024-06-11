@@ -1,7 +1,10 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 
 import { TOrder } from '@utils-types';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from 'src/services/store';
 import { FeedInfoUI } from '../ui/feed-info';
+import { fetchOrders } from '../../services/slices/ordersSlice';
 
 const getOrders = (orders: TOrder[], status: string): number[] =>
   orders
@@ -10,13 +13,21 @@ const getOrders = (orders: TOrder[], status: string): number[] =>
     .slice(0, 20);
 
 export const FeedInfo: FC = () => {
-  /** TODO: взять переменные из стора */
-  const orders: TOrder[] = [];
-  const feed = {};
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    dispatch(fetchOrders());
+  }, [dispatch]);
+  const orders: TOrder[] = useSelector(
+    (state: RootState) => state.orders.orders
+  );
+  const total = useSelector((state: RootState) => state.orders.total);
+  const totalToday = useSelector((state: RootState) => state.orders.totalToday);
 
   const readyOrders = getOrders(orders, 'done');
-
   const pendingOrders = getOrders(orders, 'pending');
+
+  const feed = { total, totalToday };
 
   return (
     <FeedInfoUI
