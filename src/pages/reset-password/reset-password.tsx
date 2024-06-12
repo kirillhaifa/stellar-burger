@@ -3,12 +3,26 @@ import { useNavigate } from 'react-router-dom';
 
 import { resetPasswordApi } from '@api';
 import { ResetPasswordUI } from '@ui-pages';
+<<<<<<< HEAD
+=======
+import { useSelector } from '../../services/store';
+>>>>>>> 984f075 (after first review)
 
 export const ResetPassword: FC = () => {
   const navigate = useNavigate();
   const [password, setPassword] = useState('');
   const [token, setToken] = useState('');
   const [error, setError] = useState<Error | null>(null);
+<<<<<<< HEAD
+=======
+  const authed = useSelector((state) => state.auth.authorized);
+
+  useEffect(() => {
+    if (authed) {
+      navigate('/');
+    }
+  }, []);
+>>>>>>> 984f075 (after first review)
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();

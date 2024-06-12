@@ -1,5 +1,6 @@
 import { ProfileUI } from '@ui-pages';
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
+<<<<<<< HEAD
 
 export const Profile: FC = () => {
   /** TODO: взять переменную из стора */
@@ -7,6 +8,14 @@ export const Profile: FC = () => {
     name: '',
     email: ''
   };
+=======
+import { useDispatch, useSelector } from '../../services/store';
+import { setUser } from '../../services/slices/authSlice';
+
+export const Profile: FC = () => {
+  const user = useSelector((state) => state.auth.user);
+  const dispatch = useDispatch();
+>>>>>>> 984f075 (after first review)
 
   const [formValue, setFormValue] = useState({
     name: user.name,

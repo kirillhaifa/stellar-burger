@@ -1,5 +1,8 @@
 import { useSelector } from '../../services/store';
+<<<<<<< HEAD
 
+=======
+>>>>>>> 984f075 (after first review)
 import styles from './constructor-page.module.css';
 
 import { BurgerIngredients } from '../../components';
@@ -8,8 +11,14 @@ import { Preloader } from '../../components/ui';
 import { FC } from 'react';
 
 export const ConstructorPage: FC = () => {
+<<<<<<< HEAD
   /** TODO: взять переменную из стора */
   const isIngredientsLoading = false;
+=======
+  const isIngredientsLoading = useSelector(
+    (state) => state.ingredients.loading
+  );
+>>>>>>> 984f075 (after first review)
 
   return (
     <>

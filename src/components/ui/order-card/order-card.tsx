@@ -11,6 +11,7 @@ import { OrderCardUIProps } from './type';
 import { OrderStatus } from '@components';
 
 export const OrderCardUI: FC<OrderCardUIProps> = memo(
+<<<<<<< HEAD
   ({ orderInfo, maxIngredients, locationState }) => (
     <Link
       to={orderInfo.number.toString()}
@@ -70,6 +71,23 @@ export const OrderCardUI: FC<OrderCardUIProps> = memo(
             className={`text text_type_digits-default pr-1 ${styles.order_total}`}
           >
             {orderInfo.total}
+=======
+  ({ orderInfo, maxIngredients }) => {
+    const location = useLocation();
+
+    return (
+      <Link
+        to={`/profile/orders/${orderInfo.number}`}
+        state={{ backgroundLocation: location }}
+        className={`p-6 mb-4 mr-2 ${styles.order}`}
+      >
+        <div className={styles.order_info}>
+          <span className={`text text_type_digits-default ${styles.number}`}>
+            #{String(orderInfo.number).padStart(6, '0')}
+          </span>
+          <span className='text text_type_main-default text_color_inactive'>
+            <FormattedDate date={orderInfo.date} />
+>>>>>>> 984f075 (after first review)
           </span>
           <CurrencyIcon type='primary' />
         </div>
