@@ -2,19 +2,17 @@ import { FC, SyntheticEvent, useEffect, useState } from 'react';
 import { LoginUI } from '@ui-pages';
 import { TAuthResponse, loginUserApi } from '@api';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../services/store';
+import { useDispatch, useSelector } from '../../services/store';
 import { setData } from '../../services/slices/authSlice';
 import { setCookie } from '../../utils/cookie';
-import { Root } from 'react-dom/client';
 
 export const Login: FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  const dispatch = useDispatch<AppDispatch>();
-  const authed = useSelector((state: RootState) => state.auth.authorized);
-  const desiredUrl = useSelector((state: RootState) => state.auth.desiredUrl);
+  const dispatch = useDispatch();
+  const authed = useSelector((state) => state.auth.authorized);
+  const desiredUrl = useSelector((state) => state.auth.desiredUrl);
 
   useEffect(() => {
     if (authed) {

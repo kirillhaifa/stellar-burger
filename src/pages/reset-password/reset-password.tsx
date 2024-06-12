@@ -3,15 +3,14 @@ import { useNavigate } from 'react-router-dom';
 
 import { resetPasswordApi } from '@api';
 import { ResetPasswordUI } from '@ui-pages';
-import { useSelector } from 'react-redux';
-import { RootState } from 'src/services/store';
+import { useSelector } from '../../services/store';
 
 export const ResetPassword: FC = () => {
   const navigate = useNavigate();
   const [password, setPassword] = useState('');
   const [token, setToken] = useState('');
   const [error, setError] = useState<Error | null>(null);
-  const authed = useSelector((state: RootState) => state.auth.authorized);
+  const authed = useSelector((state) => state.auth.authorized);
 
   useEffect(() => {
     if (authed) {

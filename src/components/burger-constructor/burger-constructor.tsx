@@ -1,25 +1,24 @@
 import { FC, useMemo, useState } from 'react';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from 'src/services/store';
 import { clearConstructor } from '../../services/slices/constructorSlice';
 import { TNewOrderResponse, getOrdersApi, orderBurgerApi } from '@api';
 import { TOrder } from '@utils-types';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { current } from '@reduxjs/toolkit';
 import { setDesiredUrl } from '../../services/slices/authSlice';
+import { useDispatch, useSelector } from '../../services/store';
 
 export const BurgerConstructor: FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const authed = useSelector((state: RootState) => state.auth.authorized);
+  const dispatch = useDispatch();
+  const authed = useSelector((state) => state.auth.authorized);
   const [orderRequest, setOrderRequest] = useState(false);
   const [orderModalData, setOrderModalData] = useState<TOrder | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
 
   const { bun, constructorIngredients } = useSelector(
-    (state: RootState) => state.constructorBurger
+    (state) => state.constructorBurger
   );
 
   const constructorItems = {

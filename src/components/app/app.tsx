@@ -23,15 +23,14 @@ import {
 import { Modal, OrderInfo, IngredientDetails } from '@components';
 import { ProtectedRoute } from '../protectedRoute/protectedRoute';
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../services/store';
 import { fetchIngredients } from '../../services/slices/ingredientsSlice';
-import { AppDispatch, RootState } from 'src/services/store';
 import { fetchOrders } from '../../services/slices/ordersSlice';
 import { checkAuth } from '../../services/slices/authSlice';
 import { Preloader } from '../ui/preloader';
 
 const App = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const state = location.state as { backgroundLocation?: Location };
@@ -42,10 +41,7 @@ const App = () => {
     dispatch(fetchOrders());
   }, [dispatch]);
 
-  const authIsChecking = useSelector(
-    (state: RootState) => state.auth.authIsChecking
-  );
-  const authorized = useSelector((state: RootState) => state.auth.authorized);
+  const authIsChecking = useSelector((state) => state.auth.authIsChecking);
 
   if (authIsChecking) {
     return (
@@ -132,7 +128,7 @@ const App = () => {
                   <Modal
                     title='Детали заказа'
                     onClose={() => {
-                      navigate('/profile/orders');
+                      navigate(-1);
                     }}
                   >
                     <OrderInfo />

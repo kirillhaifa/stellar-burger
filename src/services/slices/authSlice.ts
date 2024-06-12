@@ -27,36 +27,26 @@ const initialState: AuthState = {
 export const checkAuth = createAsyncThunk(
   'auth/checkAuth',
   async (_, thunkAPI) => {
-    thunkAPI.dispatch(startAuthCheck());
-    try {
-      const accessToken = getCookie('accessToken');
-      if (accessToken) {
-        const userResponse = await getUserApi();
-        if (userResponse.success) {
-          thunkAPI.dispatch(setUser(userResponse.user));
-        } else {
-          thunkAPI.dispatch(clearData());
-        }
+    const accessToken = getCookie('accessToken');
+    if (accessToken) {
+      const userResponse = await getUserApi();
+      if (userResponse.success) {
+        thunkAPI.dispatch(setUser(userResponse.user));
       } else {
         thunkAPI.dispatch(clearData());
       }
-    } catch (error) {
+    } else {
       thunkAPI.dispatch(clearData());
-    } finally {
-      thunkAPI.dispatch(finishAuthCheck());
     }
+    thunkAPI.dispatch(finishAuthCheck());
   }
 );
 
 export const fetchUserOrders = createAsyncThunk(
   'auth/fetchOrders',
   async (_, thunkAPI) => {
-    try {
-      const orders = await getOrdersApi();
-      return orders;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
+    const orders = await getOrdersApi();
+    return orders;
   }
 );
 
@@ -91,11 +81,16 @@ const authSlice = createSlice({
     }
   },
   extraReducers: (builder) => {
+    builder.addCase(checkAuth.pending, (state) => {
+      state.authIsChecking = true;
+    });
     builder.addCase(checkAuth.fulfilled, (state) => {
       state.authIsChecking = false;
     });
     builder.addCase(checkAuth.rejected, (state) => {
       state.authIsChecking = false;
+      state.user = { name: '', email: '' };
+      state.authorized = false;
     });
     builder.addCase(fetchUserOrders.pending, (state) => {
       state.ordersIsLoading = true;
