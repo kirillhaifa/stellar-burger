@@ -1,0 +1,9 @@
+{
+  "success": true,
+  "accessToken": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2Njc2ZjVjOTdlZGUwMDAxZDA2ZmRiZCIsImlhdCI6MTcxOTc4MDY3MSwiZXhwIjoxNzE5NzgxODcxfQ.KKPr8caR9i1iAu8ZnkoZh6xXfFk3YsX0CbrcHiK4m4w",
+  "refreshToken": "b4951d02477d27d1dcb0956af7bc88aabac57e0ff1af06b0b8d3c237e05445de80ef412a07d606cf",
+  "user": {
+      "email": "format3473@gmail.com",
+      "name": "kirill"
+  }
+}
