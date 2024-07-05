@@ -12,7 +12,7 @@ interface AuthState {
   desiredUrl: string | null;
 }
 
-const initialState: AuthState = {
+export const initialState: AuthState = {
   user: {
     name: '',
     email: ''

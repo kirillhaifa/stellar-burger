@@ -1,18 +1,13 @@
 import configureStore from 'redux-mock-store';
-import { setCookie } from '../../src/utils/cookie';
+import { setCookie, deleteCookie } from '../../src/utils/cookie';
+import { initialState } from '../../src/services/slices/authSlice';
 
 // Создайте моковый стор
 const mockStore = configureStore([]);
-const initialState = {
-  auth: {
-    user: { name: '', email: '' },
-    authIsChecking: false,
-    authorized: false,
-    orders: [],
-    ordersIsLoading: false,
-    desiredUrl: null
-  }
-};
+const url = 'http://localhost:4000';
+const ingridientSlector = '[data-cy=ingredient-item]';
+const modalSelector = '[data-cy=modal]';
+const modalCloseSelector = '[data-cy=modal-close-button]';
 
 describe('неавторизированная часть', function () {
   beforeEach(() => {
@@ -25,41 +20,41 @@ describe('неавторизированная часть', function () {
       }).as('getIngredients');
 
       // Посещаем страницу и ждем загрузки ингредиентов
-      cy.visit('http://localhost:4000');
+      cy.visit(url);
       cy.wait('@getIngredients');
     });
   });
 
   it('сервис должен быть доступен по адресу localhost:4000', function () {
-    cy.visit('http://localhost:4000');
+    cy.visit(url);
   });
 
   it('открытие модального окна ингредиента', function () {
     // Убедимся, что элементы с ингредиентами отрисовались
-    cy.get('[data-cy=ingredient-item]').should('have.length.greaterThan', 0);
+    cy.get(ingridientSlector).should('have.length.greaterThan', 0);
 
     // Находим первый ингредиент по атрибуту data-cy
-    cy.get('[data-cy=ingredient-item]').first().click();
+    cy.get(ingridientSlector).first().click();
 
     // Проверяем, что модальное окно открылось
-    cy.get('[data-cy=modal]').should('be.visible');
+    cy.get(modalSelector).should('be.visible');
   });
 
   it('закрытие модального окна', function () {
     // Убедимся, что элементы с ингредиентами отрисовались
-    cy.get('[data-cy=ingredient-item]').should('have.length.greaterThan', 0);
+    cy.get(ingridientSlector).should('have.length.greaterThan', 0);
 
     // Находим первый ингредиент по атрибуту data-cy
-    cy.get('[data-cy=ingredient-item]').first().click();
+    cy.get(ingridientSlector).first().click();
 
     // Проверяем, что модальное окно открылось
-    cy.get('[data-cy=modal]').should('be.visible');
+    cy.get(modalSelector).should('be.visible');
 
     //находим кнопку закрытия и кликаем
-    cy.get('[data-cy=modal-close-button]').first().click();
+    cy.get(modalCloseSelector).first().click();
 
     //проверяем что можального окна нет
-    cy.get('[data-cy=modal]').should('not.exist');
+    cy.get(modalSelector).should('not.exist');
   });
 
   it('добавление ингридиента', function () {
@@ -107,10 +102,15 @@ describe('авторизированная часть', function () {
       }).as('getUser');
 
       // Посещаем страницу и ждем загрузки данных
-      cy.visit('http://localhost:4000');
+      cy.visit(url);
       cy.wait('@getIngredients');
       cy.wait('@getUser');
     });
+  });
+
+  afterEach(() => {
+    deleteCookie('accessToken');
+    localStorage.removeItem('refreshToken');
   });
 
   it('создаем заказ', function () {
@@ -140,16 +140,16 @@ describe('авторизированная часть', function () {
     cy.contains('Оформить заказ').click();
     cy.wait('@postOrder');
 
-    cy.get('[data-cy=modal]').should('be.visible');
+    cy.get(modalSelector).should('be.visible');
     cy.get('@orderData').then((order) => {
       cy.contains(order.order.number);
     });
 
     //находим кнопку закрытия и кликаем
-    cy.get('[data-cy=modal-close-button]').first().click();
+    cy.get(modalCloseSelector).first().click();
 
     //проверяем что модального окна нет
-    cy.get('[data-cy=modal]').should('not.exist');
+    cy.get(modalSelector).should('not.exist');
 
     //проверяеем что нет добавленных элементов
     cy.get('[data-cy=added-ingridient]').should('not.exist');
